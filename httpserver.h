@@ -21,6 +21,7 @@ private:
 	QTcpServer mTcpServer;
 	ushort mPort;
 
+private slots:
 	void newConnection();
 };
 
