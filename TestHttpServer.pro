@@ -19,9 +19,15 @@ TEMPLATE = app
 SOURCES += main.cpp \
     httpserver.cpp \
     connection.cpp \
-    abstracthttpheandler.cpp
+    abstracthttpheandler.cpp \
+    abstracthttpheandlerfactory.cpp \
+    testhttpheandler.cpp \
+    testhttpheandlerfactory.cpp
 
 HEADERS += \
     httpserver.h \
     connection.h \
-    abstracthttpheandler.h
+    abstracthttpheandler.h \
+    abstracthttpheandlerfactory.h \
+    testhttpheandler.h \
+    testhttpheandlerfactory.h

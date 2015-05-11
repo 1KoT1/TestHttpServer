@@ -1,10 +1,12 @@
+#include "abstracthttpheandler.h"
 #include "connection.h"
 #include <QTextStream>
 
-Connection::Connection(QAbstractSocket *socket, QObject *parent) :
+Connection::Connection(QAbstractSocket *socket, AbstractHttpHeandler* heandler, QObject *parent) :
 	QObject(parent),
 	mSocket(socket),
-	mAllByteWriten(false)
+	mAllByteWriten(false),
+	mHeandler(heandler)
 {
 	connect(mSocket.get(), SIGNAL(readyRead()), SLOT(processNewData()));
 	connect(mSocket.get(), SIGNAL(bytesWritten(qint64)), SLOT(bytesWritten()));
@@ -20,10 +22,9 @@ void Connection::processNewData() {
 	while(mSocket->canReadLine()) {
 		qDebug() << textStream.readLine();
 	}
-	textStream << "HTTP/1.0 200 Ok\r\n"
-								"Content-Type: text/html; charset=\"utf-8\"\r\n"
-								"\r\n"
-								"<h1>Nothing to see here</h1>\n";
+
+	mHeandler->makeResponce(&textStream);
+
 	mAllByteWriten = true;
 }
 

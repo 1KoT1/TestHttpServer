@@ -1,12 +1,16 @@
-#include "httpheandlerfactory.h"
+#include "testhttpheandler.h"
+#include "testhttpheandlerfactory.h"
 
-HttpHeandlerFactory::HttpHeandlerFactory()
+TestHttpHeandlerFactory::TestHttpHeandlerFactory()
 {
 
 }
 
-HttpHeandlerFactory::~HttpHeandlerFactory()
+TestHttpHeandlerFactory::~TestHttpHeandlerFactory()
 {
 
 }
 
+AbstractHttpHeandler *TestHttpHeandlerFactory::getHttpHeandler(QObject *parent) {
+	return new TestHttpHeandler(parent);
+}

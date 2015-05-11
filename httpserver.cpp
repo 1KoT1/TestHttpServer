@@ -7,12 +7,16 @@
 
 using namespace std;
 
-HttpServer::HttpServer(ushort port, QObject *parent) :
+HttpServer::HttpServer(ushort port, AbstractHttpHeandlerFactory * heandlerFactory, QObject *parent) :
 	QObject(parent),
 	mTcpServer(this),
 	mPort(port),
-	mConectionsCollection()
+	mConectionsCollection(),
+	mHeandlerFactory(heandlerFactory)
 {
+	if(!mHeandlerFactory->parent()) {
+		mHeandlerFactory->setParent(this);
+	}
 	connect(&mTcpServer, SIGNAL(newConnection()), SLOT(newConnection()));
 }
 
@@ -29,7 +33,7 @@ void HttpServer::stop() {
 }
 
 void HttpServer::newConnection() {
-	auto newConnection = new Connection(mTcpServer.nextPendingConnection());
+	auto newConnection = new Connection(mTcpServer.nextPendingConnection(), mHeandlerFactory->getHttpHeandler(this));
 	connect(newConnection,
 					SIGNAL(allDataSend(const Connection*)),
 					SLOT(connectionAllDataSend(const Connection*))

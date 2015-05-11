@@ -1,12 +1,17 @@
 #ifndef HTTPHEANDLERFACTORY_H
 #define HTTPHEANDLERFACTORY_H
 
+#include "abstracthttpheandlerfactory.h"
 
-class HttpHeandlerFactory : public AbstractHttpHeandlerFactory
-{
+class TestHttpHeandlerFactory : public AbstractHttpHeandlerFactory {
+	Q_OBJECT
 public:
-	HttpHeandlerFactory();
-	~HttpHeandlerFactory();
+	TestHttpHeandlerFactory();
+	~TestHttpHeandlerFactory();
+
+	// AbstractHttpHeandlerFactory interface
+public:
+	AbstractHttpHeandler *getHttpHeandler(QObject *parent);
 };
 
 #endif // HTTPHEANDLERFACTORY_H

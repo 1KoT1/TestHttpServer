@@ -1,10 +1,9 @@
 #ifndef TESTHTTPHEANDLER_H
 #define TESTHTTPHEANDLER_H
 
-#include <QObject>
+#include "abstracthttpheandler.h"
 
-class TestHttpHeandler : public QObject
-{
+class TestHttpHeandler : public AbstractHttpHeandler {
 	Q_OBJECT
 public:
 	explicit TestHttpHeandler(QObject *parent = 0);
@@ -13,6 +12,10 @@ public:
 signals:
 
 public slots:
+
+	// AbstractHttpHeandler interface
+public:
+	void makeResponce(QTextStream *);
 };
 
 #endif // TESTHTTPHEANDLER_H

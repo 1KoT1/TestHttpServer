@@ -5,6 +5,8 @@
 #include <memory>
 #include <QObject>
 
+class AbstractHttpHeandler;
+
 class Connection : public QObject {
 	Q_OBJECT
 public:
@@ -18,7 +20,7 @@ public:
 	 * Connection сам позаботиться об уничтожении переданного объекта-сокета.
 	 * @param parent
 	 */
-	explicit Connection(QAbstractSocket* socket, QObject *parent = 0);
+	explicit Connection(QAbstractSocket* socket, AbstractHttpHeandler* heandler, QObject *parent = 0);
 	virtual ~Connection();
 
 signals:
@@ -28,6 +30,7 @@ public slots:
 private:
 	std::unique_ptr<QAbstractSocket> mSocket;
 	bool mAllByteWriten;
+	AbstractHttpHeandler* mHeandler;
 
 private slots:
 	void processNewData();

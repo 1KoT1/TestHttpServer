@@ -1,6 +1,7 @@
 #ifndef HTTPSERVER_H
 #define HTTPSERVER_H
 
+#include "abstracthttpheandlerfactory.h"
 #include "connection.h"
 #include <list>
 #include <memory>
@@ -12,7 +13,7 @@ using ConectionsCollectionType = std::list<std::unique_ptr<Connection>>;
 class HttpServer : public QObject {
 	Q_OBJECT
 public:
-	explicit HttpServer(ushort port, QObject *parent = 0);
+	explicit HttpServer(ushort port, AbstractHttpHeandlerFactory * heandlerFactory, QObject *parent = 0);
 	~HttpServer();
 
 	void start();
@@ -26,6 +27,7 @@ private:
 	QTcpServer mTcpServer;
 	ushort mPort;
 	ConectionsCollectionType mConectionsCollection;
+	std::unique_ptr<AbstractHttpHeandlerFactory> mHeandlerFactory;
 
 private slots:
 	void newConnection();
