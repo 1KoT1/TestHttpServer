@@ -3,6 +3,10 @@
 #include <QTcpSocket>
 #include <QTextStream>
 
+#include <QDebug>
+
+using namespace std;
+
 HttpServer::HttpServer(ushort port, QObject *parent) :
 	QObject(parent),
 	mTcpServer(this),
@@ -25,20 +29,17 @@ void HttpServer::stop() {
 }
 
 void HttpServer::newConnection() {
-	QAbstractSocket* socket = mTcpServer.nextPendingConnection();
-	QTextStream textStream(socket);
-	textStream.setAutoDetectUnicode(true);
-	while(textStream.atEnd()) {
-		socket->waitForReadyRead();
-		if(socket->canReadLine()) {
-			qDebug() << textStream.readLine();
-		}
-	}
-	textStream << "HTTP/1.0 200 Ok\r\n"
-								"Content-Type: text/html; charset=\"utf-8\"\r\n"
-								"\r\n"
-								"<h1>Nothing to see here</h1>\n"
-						 << QDateTime::currentDateTime().toString() << "\n";
-	socket->close();
+	auto newConnection = new Connection(mTcpServer.nextPendingConnection());
+	connect(newConnection,
+					SIGNAL(allDataSend(const Connection*)),
+					SLOT(connectionAllDataSend(const Connection*))
+				 );
+	mConectionsCollection.push_back(unique_ptr<Connection>(newConnection));
+}
+
+void HttpServer::connectionAllDataSend(const Connection *closingConnection){
+	qDebug() << mConectionsCollection.size();
+	mConectionsCollection.remove_if([closingConnection](const unique_ptr<Connection>& c) { return c.get() == closingConnection; });
+	qDebug() << mConectionsCollection.size();
 }
 

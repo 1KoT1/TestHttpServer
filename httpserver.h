@@ -3,10 +3,11 @@
 
 #include "connection.h"
 #include <list>
+#include <memory>
 #include <QObject>
 #include <QTcpServer>
 
-using ConectionsCollectionType = std::list<Connection>;
+using ConectionsCollectionType = std::list<std::unique_ptr<Connection>>;
 
 class HttpServer : public QObject {
 	Q_OBJECT
@@ -28,6 +29,7 @@ private:
 
 private slots:
 	void newConnection();
+	void connectionAllDataSend(const Connection* closingConnection);
 };
 
 #endif // HTTPSERVER_H
