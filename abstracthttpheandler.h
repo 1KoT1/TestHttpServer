@@ -10,7 +10,7 @@ public:
 	explicit AbstractHttpHeandler(QObject *parent = 0);
 	~AbstractHttpHeandler();
 
-	void makeResponce(QTextStream *) = 0;
+	virtual void makeResponce(QTextStream *) = 0;
 signals:
 
 public slots:
