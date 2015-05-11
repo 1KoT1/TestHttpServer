@@ -6,7 +6,8 @@
 HttpServer::HttpServer(ushort port, QObject *parent) :
 	QObject(parent),
 	mTcpServer(this),
-	mPort(port)
+	mPort(port),
+	mConectionsCollection()
 {
 	connect(&mTcpServer, SIGNAL(newConnection()), SLOT(newConnection()));
 }

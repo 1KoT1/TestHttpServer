@@ -1,8 +1,12 @@
 #ifndef HTTPSERVER_H
 #define HTTPSERVER_H
 
+#include "connection.h"
+#include <list>
 #include <QObject>
 #include <QTcpServer>
+
+using ConectionsCollectionType = std::list<Connection>;
 
 class HttpServer : public QObject {
 	Q_OBJECT
@@ -20,6 +24,7 @@ public slots:
 private:
 	QTcpServer mTcpServer;
 	ushort mPort;
+	ConectionsCollectionType mConectionsCollection;
 
 private slots:
 	void newConnection();
