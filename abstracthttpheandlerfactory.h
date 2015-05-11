@@ -9,7 +9,7 @@ class AbstractHttpHeandlerFactory : public QObject {
 	Q_OBJECT
 public:
 	explicit AbstractHttpHeandlerFactory(QObject *parent = 0);
-	~AbstractHttpHeandlerFactory();
+	virtual ~AbstractHttpHeandlerFactory();
 
 	virtual AbstractHttpHeandler *getHttpHeandler(QObject *parent = 0) = 0;
 

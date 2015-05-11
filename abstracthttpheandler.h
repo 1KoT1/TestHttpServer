@@ -8,7 +8,7 @@ class AbstractHttpHeandler : public QObject {
 	Q_OBJECT
 public:
 	explicit AbstractHttpHeandler(QObject *parent = 0);
-	~AbstractHttpHeandler();
+	virtual ~AbstractHttpHeandler();
 
 	virtual void makeResponce(QTextStream *) = 0;
 signals:
