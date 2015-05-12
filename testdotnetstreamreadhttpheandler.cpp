@@ -38,6 +38,8 @@ void TestDotNetStreamReadHttpHeandler::makeResponce(QTextStream *textStream, con
 		qWarning() << trUtf8("Не удалось распарсить значение параметра %0").arg(delayParmKey) << params.at(countParmKey);
 	}
 
+	*textStream << trUtf8("Поток для проверки.\n");
+
 	for(uint i = 0; i < count; i++) {
 		*textStream << QString("Test %0 \n").arg(QDateTime::currentDateTime().toString());
 		textStream->flush();
