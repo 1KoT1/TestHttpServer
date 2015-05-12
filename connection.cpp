@@ -31,8 +31,8 @@ void Connection::processNewData() {
 		qWarning() << trUtf8("Запрос имеет неподдерживаемый формат: ") << request;
 		return;
 	}
-	if(requestParts.first() == "GET") {
-		mHeandler->makeResponce(&mTextStream);
+	if(requestParts.first() == "GET" && requestParts.size() >= 2) {
+		mHeandler->makeResponce(&mTextStream, requestParts.at(1));
 	} else {
 		qWarning() << trUtf8("Запрос имеет неподдерживаемый формат: ") << request;
 	}

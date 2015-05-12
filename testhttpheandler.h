@@ -15,7 +15,7 @@ public slots:
 
 	// AbstractHttpHeandler interface
 public:
-	void makeResponce(QTextStream *);
+	void makeResponce(QTextStream *, const QString &requestParams);
 };
 
 #endif // TESTHTTPHEANDLER_H

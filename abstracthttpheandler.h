@@ -10,7 +10,7 @@ public:
 	explicit AbstractHttpHeandler(QObject *parent = 0);
 	virtual ~AbstractHttpHeandler();
 
-	virtual void makeResponce(QTextStream *) = 0;
+	virtual void makeResponce(QTextStream *, const QString &requestParams) = 0;
 signals:
 	void responceMade();
 

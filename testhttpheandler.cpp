@@ -10,7 +10,7 @@ TestHttpHeandler::~TestHttpHeandler()
 
 }
 
-void TestHttpHeandler::makeResponce(QTextStream *textStream) {
+void TestHttpHeandler::makeResponce(QTextStream *textStream, const QString &) {
 	*textStream << "HTTP/1.0 200 Ok\r\n"
 								 "Content-Type: text/html; charset=\"utf-8\"\r\n"
 								 "\r\n"
