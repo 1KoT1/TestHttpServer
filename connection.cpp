@@ -32,6 +32,11 @@ void Connection::processNewData() {
 		return;
 	}
 	if(requestParts.first() == "GET" && requestParts.size() >= 2) {
+		auto httpVersion = requestParts.size() >=3 ? requestParts.at(2) : "";
+		if(!httpVersion.isEmpty()) {
+			mTextStream << httpVersion << ' ';
+		}
+		mTextStream << "200 OK\n\n";
 		mHeandler->makeResponce(&mTextStream, requestParts.at(1));
 	} else {
 		qWarning() << trUtf8("Запрос имеет неподдерживаемый формат: ") << request;
