@@ -1,5 +1,6 @@
 #include <QDateTime>
 #include <QDebug>
+#include <QThread>
 #include <map>
 #include "testdotnetstreamreadhttpheandler.h"
 
@@ -43,6 +44,7 @@ void TestDotNetStreamReadHttpHeandler::makeResponce(QTextStream *textStream, con
 	for(uint i = 0; i < count; i++) {
 		*textStream << QString("Test %0 \n").arg(QDateTime::currentDateTime().toString());
 		textStream->flush();
+		QThread::currentThread()->sleep(delay);
 	}
 
 	emit responceMade();
