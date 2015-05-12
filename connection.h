@@ -4,6 +4,7 @@
 #include <QAbstractSocket>
 #include <memory>
 #include <QObject>
+#include <QTextStream>
 
 class AbstractHttpHeandler;
 
@@ -31,10 +32,12 @@ private:
 	std::unique_ptr<QAbstractSocket> mSocket;
 	bool mAllByteWriten;
 	AbstractHttpHeandler* mHeandler;
+	QTextStream mTextStream;
 
 private slots:
 	void processNewData();
 	void bytesWritten();
+	void responceMade();
 };
 
 #endif // CONNECTION_H

@@ -15,4 +15,6 @@ void TestHttpHeandler::makeResponce(QTextStream *textStream) {
 								 "Content-Type: text/html; charset=\"utf-8\"\r\n"
 								 "\r\n"
 								 "<h1>Test</h1>\n";
+
+	emit responceMade();
 }

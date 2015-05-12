@@ -12,6 +12,7 @@ public:
 
 	virtual void makeResponce(QTextStream *) = 0;
 signals:
+	void responceMade();
 
 public slots:
 };
