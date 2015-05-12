@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     abstracthttpheandler.cpp \
     abstracthttpheandlerfactory.cpp \
     testhttpheandler.cpp \
-    testhttpheandlerfactory.cpp
+    testhttpheandlerfactory.cpp \
+    testdotnetstreamreadhttpheandler.cpp
 
 HEADERS += \
     httpserver.h \
@@ -30,4 +31,5 @@ HEADERS += \
     abstracthttpheandler.h \
     abstracthttpheandlerfactory.h \
     testhttpheandler.h \
-    testhttpheandlerfactory.h
+    testhttpheandlerfactory.h \
+    testdotnetstreamreadhttpheandler.h
