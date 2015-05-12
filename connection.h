@@ -2,6 +2,7 @@
 #define CONNECTION_H
 
 #include <QAbstractSocket>
+#include <QByteArray>
 #include <memory>
 #include <QObject>
 #include <QTextStream>
@@ -33,6 +34,7 @@ private:
 	bool mAllByteWriten;
 	AbstractHttpHeandler* mHeandler;
 	QTextStream mTextStream;
+	QByteArray mBufferIn;
 
 private slots:
 	void processNewData();
