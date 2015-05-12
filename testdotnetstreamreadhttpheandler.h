@@ -12,7 +12,7 @@ public:
 
 	// AbstractHttpHeandler interface
 public:
-	void makeResponce(QTextStream *, const QString &requestParams);
+	void makeResponce(QTextStream *textStream, const QString &requestParams);
 };
 
 #endif // TESTDOTNETSTREAMREADHTTPHEANDLER_H
