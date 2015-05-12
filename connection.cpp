@@ -21,6 +21,7 @@ Connection::Connection(QAbstractSocket *socket, AbstractHttpHeandler* heandler, 
 	connect(mHeandler, SIGNAL(responceMade()), SLOT(responceMade()));
 	mTextStream.setAutoDetectUnicode(true);
 	mBufferIn.reserve(200);
+	connect(mSocket.get(), SIGNAL(	error(QAbstractSocket::SocketError)), SLOT(logSocketError(QAbstractSocket::SocketError)));
 }
 
 Connection::~Connection() {
@@ -74,5 +75,9 @@ void Connection::bytesWritten() {
 void Connection::responceMade() {
 	mTextStream.flush();
 	mAllByteWriten = true;
+}
+
+void Connection::logSocketError(QAbstractSocket::SocketError err) {
+	qWarning() << trUtf8("Error %0: %1").arg(err).arg(mSocket->errorString());
 }
 

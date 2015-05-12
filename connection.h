@@ -40,6 +40,7 @@ private slots:
 	void processNewData();
 	void bytesWritten();
 	void responceMade();
+	void logSocketError(QAbstractSocket::SocketError);
 };
 
 #endif // CONNECTION_H
