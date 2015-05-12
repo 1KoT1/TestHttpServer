@@ -1,5 +1,13 @@
 #include "abstracthttpheandler.h"
 #include "connection.h"
+#include <exception>
+
+using namespace std;
+
+class RequestFormatError : public runtime_error {
+public:
+	RequestFormatError() : runtime_error ("Request has bad format.") {}
+};
 
 Connection::Connection(QAbstractSocket *socket, AbstractHttpHeandler* heandler, QObject *parent) :
 	QObject(parent),
@@ -12,34 +20,49 @@ Connection::Connection(QAbstractSocket *socket, AbstractHttpHeandler* heandler, 
 	connect(mSocket.get(), SIGNAL(bytesWritten(qint64)), SLOT(bytesWritten()));
 	connect(mHeandler, SIGNAL(responceMade()), SLOT(responceMade()));
 	mTextStream.setAutoDetectUnicode(true);
+	mBufferIn.reserve(200);
+	connect(mSocket.get(), SIGNAL(	error(QAbstractSocket::SocketError)), SLOT(logSocketError(QAbstractSocket::SocketError)));
 }
 
 Connection::~Connection() {
 
 }
 
-void Connection::processNewData() {
-	QStringList request;
-	while(mSocket->canReadLine()) {
-		request << mTextStream.readLine();
-	}
-	if(request.empty()){
-		return;
-	}
-	auto requestParts = request.first().split(' ');
-	if(requestParts.empty()){
-		qWarning() << trUtf8("Запрос имеет неподдерживаемый формат: ") << request;
-		return;
-	}
-	if(requestParts.first() == "GET" && requestParts.size() >= 2) {
-		auto httpVersion = requestParts.size() >=3 ? requestParts.at(2) : "";
-		if(!httpVersion.isEmpty()) {
-			mTextStream << httpVersion << ' ';
-		}
-		mTextStream << "200 OK\n\n";
-		mHeandler->makeResponce(&mTextStream, requestParts.at(1));
+int getNextLim(const QByteArray &buffer,const char *mark, int from) {
+	auto i = buffer.indexOf(mark, from);
+	if(i == -1) {
+		throw RequestFormatError();
 	} else {
-		qWarning() << trUtf8("Запрос имеет неподдерживаемый формат: ") << request;
+		return i;
+	}
+}
+
+void Connection::processNewData() {
+	mBufferIn.push_back(mSocket->readAll());
+	try {
+		if(mBufferIn.endsWith("\r\n\r\n")) {
+			auto i = getNextLim(mBufferIn, " ", 0);
+
+			auto command = mBufferIn.left(i);
+			if(command == "GET") {
+				i++;
+				auto i2 = getNextLim(mBufferIn, " ", i);
+				auto uri = mBufferIn.mid(i, i2 - i);
+
+				i2++;
+				auto i3 = getNextLim(mBufferIn, "\r\n", i2);
+				if(i3 != i2) {
+					mTextStream << mBufferIn.mid(i2, i3 - i2) << ' ';
+				}
+				mTextStream << "200 OK\r\n\r\n";
+
+				mHeandler->makeResponce(&mTextStream, uri);
+			} else {
+				throw RequestFormatError();
+			}
+		}
+	} catch(RequestFormatError) {
+		qWarning() << trUtf8("Запрос имеет неподдерживаемый формат: ") << mBufferIn;
 	}
 }
 
@@ -52,5 +75,9 @@ void Connection::bytesWritten() {
 void Connection::responceMade() {
 	mTextStream.flush();
 	mAllByteWriten = true;
+}
+
+void Connection::logSocketError(QAbstractSocket::SocketError err) {
+	qWarning() << trUtf8("Error %0: %1").arg(err).arg(mSocket->errorString());
 }
 
