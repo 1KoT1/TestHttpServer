@@ -18,6 +18,7 @@ HttpServer::HttpServer(ushort port, AbstractHttpHeandlerFactory * heandlerFactor
 		mHeandlerFactory->setParent(this);
 	}
 	connect(&mTcpServer, SIGNAL(newConnection()), SLOT(newConnection()));
+	connect(&mTcpServer, SIGNAL(acceptError(QAbstractSocket::SocketError)), SLOT(logError(QAbstractSocket::SocketError)));
 }
 
 HttpServer::~HttpServer() {
@@ -45,5 +46,9 @@ void HttpServer::connectionAllDataSend(const Connection *closingConnection){
 	qDebug() << mConectionsCollection.size();
 	mConectionsCollection.remove_if([closingConnection](const unique_ptr<Connection>& c) { return c.get() == closingConnection; });
 	qDebug() << mConectionsCollection.size();
+}
+
+void HttpServer::logError(QAbstractSocket::SocketError err) {
+	qCritical() << trUtf8("Error %0: %1").arg(err).arg(mTcpServer.errorString());
 }
 

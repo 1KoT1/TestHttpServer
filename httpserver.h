@@ -32,6 +32,7 @@ private:
 private slots:
 	void newConnection();
 	void connectionAllDataSend(const Connection* closingConnection);
+	void logError(QAbstractSocket::SocketError err);
 };
 
 #endif // HTTPSERVER_H
