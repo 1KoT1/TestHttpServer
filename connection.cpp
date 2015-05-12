@@ -19,11 +19,23 @@ Connection::~Connection() {
 }
 
 void Connection::processNewData() {
+	QStringList request;
 	while(mSocket->canReadLine()) {
-		qDebug() << mTextStream.readLine();
+		request << mTextStream.readLine();
 	}
-
-	mHeandler->makeResponce(&mTextStream);
+	if(request.empty()){
+		return;
+	}
+	auto requestParts = request.first().split(' ');
+	if(requestParts.empty()){
+		qWarning() << trUtf8("Запрос имеет неподдерживаемый формат: ") << request;
+		return;
+	}
+	if(requestParts.first() == "GET") {
+		mHeandler->makeResponce(&mTextStream);
+	} else {
+		qWarning() << trUtf8("Запрос имеет неподдерживаемый формат: ") << request;
+	}
 }
 
 void Connection::bytesWritten() {
