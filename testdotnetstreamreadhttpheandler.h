@@ -3,6 +3,7 @@
 
 #include "abstracthttpheandler.h"
 #include <QObject>
+#include <QTimer>
 
 class TestDotNetStreamReadHttpHeandler : public AbstractHttpHeandler {
 	Q_OBJECT
@@ -13,6 +14,15 @@ public:
 	// AbstractHttpHeandler interface
 public:
 	void makeResponce(QTextStream *textStream, const QString &requestParams);
+
+private:
+	QTimer mTimer;
+	uint mCountOfIteration;
+	uint mIteration;
+	QTextStream *mTextStream;
+
+private slots:
+	void timeout();
 };
 
 #endif // TESTDOTNETSTREAMREADHTTPHEANDLER_H
