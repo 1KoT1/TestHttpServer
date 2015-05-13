@@ -75,6 +75,9 @@ void Connection::bytesWritten() {
 void Connection::responceMade() {
 	mTextStream.flush();
 	mAllByteWriten = true;
+	if(!mSocket->bytesToWrite()) {
+		emit allDataSend(this);
+	}
 }
 
 void Connection::logSocketError(QAbstractSocket::SocketError err) {
